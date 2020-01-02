@@ -1,5 +1,5 @@
 public class test {
     public static void test(){
-        PropertyRoll.printPropertyValues();
+        DiceSimulator.start();
     }
 }

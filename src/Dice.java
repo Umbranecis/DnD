@@ -12,7 +12,7 @@ public class Dice {
     }
 
     public void roll(){
-        this.value = diceRoller.nextInt(sites + 1);
+        this.value = diceRoller.nextInt(sites) + 1;
     }
 
     public int value(){
