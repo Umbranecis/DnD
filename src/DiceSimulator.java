@@ -1,18 +1,20 @@
+import Errors.NoValidDice;
+import Errors.BreakLoop;
+
 import java.util.Scanner;
 
 public class DiceSimulator {
 
-    public static int roll(){
+    public static int roll() throws BreakLoop, NoValidDice {
         int returnValue = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Was möchtest du auswürfeln? (Beispielsweise: 2d6+1) - schreibe zum abbrechen 'stop' ");
         String inputString = scanner.nextLine();
         if (inputString.equalsIgnoreCase("stop"))
-            return -2;
+            throw new BreakLoop();
         String[] input = inputString.split("d");
         if(input.length != 2){
-            System.out.println("Bitte einen gültigen Würfel angeben");
-            return -1;
+            throw new NoValidDice();
         }
         int amt = Integer.parseInt(input[0]);
         input = input[1].split("\\+");
@@ -27,13 +29,18 @@ public class DiceSimulator {
     }
 
 
-    public static void start(){
-        while(true){
-            int tmp = roll();
-            if(tmp == -2)
-                return;
-            if(tmp != -1)
-                System.out.println(tmp);
+    public static void start() {
+        while (true) {
+            int tmp = 0;
+            try {
+                tmp = roll();
+            }
+            catch (BreakLoop breakLoop) { return; }
+            catch ( NoValidDice noValidDice) {
+                System.out.println("Bitte einen Gültigen würfel der folgenden Art angeben: 2d6+1");
+                continue;
+            }
+            System.out.println(tmp);
         }
     }
 }

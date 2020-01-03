@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 public class PropertyRoll {
@@ -7,18 +8,16 @@ public class PropertyRoll {
     }
 
     public static int rollAndSortOut(){
-        int lowestValue = new Dice(6).value();
         int totalValue = 0;
-        for (int i = 3; i>0; i--){
-            int tmp = new Dice(6).value();
-                if (tmp > lowestValue)
-                    totalValue = totalValue + tmp;
-                if (tmp <= lowestValue) {
-                    totalValue = totalValue + lowestValue;
-                    lowestValue = tmp;
-                }
+        int[] allValues =  {0,0,0,0} ;
+        for (int i = 0; i<4; i++){
+            allValues[i] = new Dice(6).value();
         }
-        return totalValue;
+        Arrays.sort(allValues);
+        allValues[0] = 0;
+        return Arrays.stream(allValues).reduce(0, Integer::sum);
+
+        //return totalValue;
     }
 
     public static Collection<Integer> propertyValues(){
