@@ -17,9 +17,34 @@ public class Character {
     public Character(
             int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
             int proficiencyBonus, String profiecencies,
-            String characterClass, String race, String background, String allignment, String playerName
-
+            String characterClass, String race, String background, String allignment, String playerName,int speed,
+            int xp, int hp, int armorClass, int level, int gold,
+            int spellSlots1, int spellSlots2, int spellSlots3, int spellSlots4, int spellSlots5, int spellSlots6, int spellSlots7, int spellSlots8, int spellSlots9
     ) {
+        temporaryValues.put("hp", hp);
+        temporaryValues.put("spellSlots1", spellSlots1);
+        temporaryValues.put("spellSlots2", spellSlots2);
+        temporaryValues.put("spellSlots3", spellSlots3);
+        temporaryValues.put("spellSlots4", spellSlots4);
+        temporaryValues.put("spellSlots5", spellSlots5);
+        temporaryValues.put("spellSlots6", spellSlots6);
+        temporaryValues.put("spellSlots7", spellSlots7);
+        temporaryValues.put("spellSlots8", spellSlots8);
+        temporaryValues.put("spellSlots9", spellSlots9);
+        nonPersistentValues.put("xp", xp);
+        nonPersistentValues.put("hp", hp);
+        nonPersistentValues.put("armorClass", armorClass);
+        nonPersistentValues.put("level", level);
+        nonPersistentValues.put("gold", gold);
+        nonPersistentValues.put("spellSlots1", spellSlots1);
+        nonPersistentValues.put("spellSlots2", spellSlots2);
+        nonPersistentValues.put("spellSlots3", spellSlots3);
+        nonPersistentValues.put("spellSlots4", spellSlots4);
+        nonPersistentValues.put("spellSlots5", spellSlots5);
+        nonPersistentValues.put("spellSlots6", spellSlots6);
+        nonPersistentValues.put("spellSlots7", spellSlots7);
+        nonPersistentValues.put("spellSlots8", spellSlots8);
+        nonPersistentValues.put("spellSlots9", spellSlots9);
         persistentValues.put("class", characterClass);
         persistentValues.put("race", race);
         persistentValues.put("background", background);
@@ -64,6 +89,12 @@ public class Character {
             }
             }
 
+        }
+
+        void longRest(){
+            for (String str : temporaryValues.keySet()){
+                temporaryValues.replace(str, nonPersistentValues.get("str"));
+            }
         }
 
 
