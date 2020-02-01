@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 public class Character {
 
-    int y;
     private String name;
     String characterClass;
     String race;
