@@ -3,8 +3,11 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class PropertyRoll {
-    public static int value(){
-        return 1;
+    public static int value(Collection<Integer> c){
+        int tmp = 0;
+        for(Integer value: c)
+            tmp = tmp + value;
+        return tmp;
     }
 
     public static int rollAndSortOut(){
@@ -32,5 +35,6 @@ public class PropertyRoll {
         for (Integer value: values){
             System.out.println(value);
         }
+        System.out.println("Gesamt: " + value(values));
     }
 }

@@ -1,8 +1,12 @@
+import java.util.Scanner;
+
 public class test {
     public static void main(String[] args) {
+        while(true){
+        int input = Integer.parseInt(new Scanner(System.in).nextLine());
         Double sum = 0.0;
-        for (int i = 1000; i>0; i--)
-            sum = sum + PropertyRoll.rollAndSortOut();
-        System.out.println(sum/1000);
-    }
+        for (int i = input; i>0; i--)
+            sum = sum + PropertyRoll.value(PropertyRoll.propertyValues());
+        System.out.println(sum/input);
+    }}
 }
