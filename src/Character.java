@@ -2,8 +2,9 @@ import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Character {
 
+public class Character {
+    int test4nils;
     private String name;
     String characterClass;
     String race;
