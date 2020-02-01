@@ -1,25 +1,27 @@
+import javax.print.DocFlavor;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Character {
 
-
-    String name;
+    int y;
+    private String name;
     String characterClass;
     String race;
+    int strength;
+    int dexterity;
+    int constitution;
+    int intelligence;
+    int wisdom;
+    int charisma;
     int level;
-    int hp;
+    int maxHp;
     int tempHp;
     String allignment;
     int xp;
     int speed;
     int initiative;
     int armorClass;
-    int strength;
-    int dexterity;
-    int constitujtion;
-    int intelligence;
-    int wisdom;
-    int charisma;
     int proficencyBonus;
     int passiveWisdom;
     ArrayList<String> proficenctSavingThrows = new ArrayList<String>();
@@ -44,6 +46,25 @@ public class Character {
     int spellSlotsLvl8;
     int spellSlotsLvl9;
     Character temporaryCharacter;
+
+    public Character(String name, String characterClass, int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,String race, int maxHp, String allignment, int speed, int spellSlotsLvl1, String cantrips, String level1Spells){
+        this.name = name;
+        this.characterClass = characterClass;
+        this.strength = strength;
+        this.dexterity = dexterity;
+        this.constitution = constitution;
+        this.intelligence = intelligence;
+        this.wisdom = wisdom;
+        this.charisma = charisma;
+        this.race = race;
+        this.maxHp = maxHp;
+        this.allignment = allignment;
+        this.speed = speed;
+        this.spellSlotsLvl1 = spellSlotsLvl1;
+        this.cantrips = (ArrayList<String>)Arrays.asList(cantrips.split(","));
+
+
+    }
 
 
 
@@ -260,11 +281,11 @@ public class Character {
     }
 
     public int getConstitujtion() {
-        return constitujtion;
+        return constitution;
     }
 
     public void setConstitujtion(int constitujtion) {
-        this.constitujtion = constitujtion;
+        this.constitution = constitujtion;
     }
 
     public int getIntelligence() {
@@ -360,11 +381,11 @@ public class Character {
     }
 
     public int getHp() {
-        return hp;
+        return maxHp;
     }
 
     public void setHp(int hp) {
-        this.hp = hp;
+        this.maxHp = hp;
     }
 
     public int getTempHp() {
