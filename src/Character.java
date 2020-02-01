@@ -61,6 +61,7 @@ public class Character {
         this.speed = speed;
         this.spellSlotsLvl1 = spellSlotsLvl1;
         this.cantrips = (ArrayList<String>)Arrays.asList(cantrips.split(","));
+        this.spellsLevel1 = (ArrayList<String>)Arrays.asList(level1Spells.split(","));
 
 
     }
