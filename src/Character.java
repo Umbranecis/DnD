@@ -1,8 +1,5 @@
 import javax.print.DocFlavor;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 public class Character {
@@ -12,7 +9,8 @@ public class Character {
     HashMap<String, String> persistentValues = new HashMap<String, String>();
     HashMap<String, Integer> nonPersistentValues = new HashMap<String, Integer>();
     HashMap<String, Integer> temporaryValues = new HashMap<String, Integer>();
-    HashMap<Integer, ArrayList<String>> inventory = new  HashMap<Integer, ArrayList<String>>();
+    Collection<String> inventory = new HashSet<String>();
+
 
     public Character(
             int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
