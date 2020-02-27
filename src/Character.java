@@ -10,6 +10,7 @@ public class Character {
     HashMap<String, Integer> nonPersistentValues = new HashMap<String, Integer>();
     HashMap<String, Integer> temporaryValues = new HashMap<String, Integer>();
     Collection<String> inventory = new HashSet<String>();
+    ArrayList<Item> attacks = new ArrayList<Item>();
 
 
     public Character(
