@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+
 public class PropertyRoll {
     public static int value(Collection<Integer> c){
         int tmp = 0;

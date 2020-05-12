@@ -7,7 +7,7 @@ public enum Program{
 
                 }
             },
-    DICESIMULATOP("diceSimulator")
+    DICESIMULATOR("diceSimulator")
             {
                 public void runProgram(){
                     DiceSimulator.start();
