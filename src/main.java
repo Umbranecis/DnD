@@ -1,16 +1,26 @@
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import org.dom4j.DocumentException;
+
 import java.util.Scanner;
 
-public class Main {
+import static javafx.application.Application.launch;
+
+public class Main extends Application {
+
+    public void start(Stage stage) throws Exception {
+        stage = Visuals.start();
+        stage.show();
+    }
 
     public static void main(String[] args) {
-        while (true) {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("What do you want to do? For rolling properties type 'properties', for starting the Dice Simulator type 'DiceSimulator' for exiting type'exit'");
-            String aufruf = scanner.nextLine();
-            if (aufruf.equalsIgnoreCase("exit"))
-                return;
-            Program.getByName(aufruf.toLowerCase()).runProgram();
-        }
+        launch(args);
     }
 }
+
+
+
 
