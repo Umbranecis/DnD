@@ -10,7 +10,7 @@ public enum Program{
     DICESIMULATOR("diceSimulator")
             {
                 public void runProgram(){
-                    DiceSimulator.start();
+                    Main.setMainStage(Visuals.diceSimulator());
                 }
             };
 
