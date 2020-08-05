@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class DiceSimulator {
 
-    public static int roll() throws BreakLoop, NoValidDice {
+    public static int rollInConsole() throws BreakLoop, NoValidDice {
         int returnValue = 0;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Was möchtest du auswürfeln? (Beispielsweise: 2d6+1) - für einen w20 Wurf gib 'w20' ein - schreibe zum abbrechen 'stop' ");
@@ -14,28 +14,35 @@ public class DiceSimulator {
             return d20();
         if (inputString.equalsIgnoreCase("stop"))
             throw new BreakLoop();
-        String[] input = inputString.split("d");
-        if(input.length != 2){
-            throw new NoValidDice();
-        }
-        int amt = Integer.parseInt(input[0]);
-        input = input[1].split("\\+");
-        int DiceEyeAmt = Integer.parseInt(input[0]);
-        int bonus = 0;
-        if (input.length == 2)
-            bonus = Integer.parseInt(input[1]);
-        for(int i = amt; i > 0; i--){
-            returnValue = returnValue + new Dice(DiceEyeAmt).value();
-        }
-        return returnValue + bonus;
+        return roll(inputString);
     }
 
+static public int roll(String s) throws NoValidDice
+{
+    if(!(s.contains("d"))){throw new NoValidDice();}
+    int result = 0;
+    int bonus = 0;
+    if(s.contains("+")){
+        String[] input = s.split("\\+");
+        bonus = Integer.parseInt(input[1]);
+        s = input[0];
+    }
+    String[] die = s.split("d");
+    int amt = Integer.parseInt(die[0]);
+    int diceSidesAmt = Integer.parseInt(die[1]);
+    for (int i = amt; i>0; i--){
+        result = result + new Dice(diceSidesAmt).value();
+    }
+
+    result = result + bonus;
+    return result;
+}
 
     public static void start() {
         while (true) {
             int tmp = 0;
             try {
-                tmp = roll();
+                tmp = rollInConsole();
             }
             catch (BreakLoop breakLoop) { return; }
             catch ( NoValidDice noValidDice) {

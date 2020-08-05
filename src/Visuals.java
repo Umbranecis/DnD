@@ -19,6 +19,9 @@ public class Visuals {
 
     }
 
+
+
+
     static class sizedButton extends Button{
         public sizedButton(String s){
             setText(s);
