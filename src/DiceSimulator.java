@@ -3,7 +3,7 @@ import Errors.BreakLoop;
 
 import java.util.Scanner;
 
-public class DiceSimulator {
+public abstract class DiceSimulator {
 
 static public int roll(String s) throws NoValidDice
 {
