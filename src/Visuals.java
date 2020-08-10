@@ -8,7 +8,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-public class Visuals {
+import java.util.Arrays;
+import java.util.Scanner;
+import org.apache.commons.lang3.StringUtils;
+
+public abstract class Visuals {
 
     public static Scene start(){
         sizedButton diceSimulator = new programButton("Start the Dice Simulator", "diceSimulator");
@@ -54,7 +58,7 @@ public class Visuals {
         dadv.setOnAction(event -> {result.setText("" + DiceSimulator.disadvantage());
         });
 
-        cancel.setOnAction(event -> {});
+        cancel.setOnAction(event -> {Main.setMainStage(start());});
 
         HBox hbox = new HBox(dice, roll);
         VBox buttons = new VBox(hbox, d20, adv, dadv, cancel);
@@ -63,6 +67,31 @@ public class Visuals {
         Scene s = new Scene(pane);
 
         return s;
+    }
+
+    public static Scene propertyRoll(){
+        Button roll = new sizedButton("roll");
+        VBox v = new VBox();
+
+        roll.setOnAction(event -> Main.setMainStage(propertyRoll()));
+
+        for (int i = 6; i>0; i--){
+            v.getChildren().add(connectedPropertyFields());
+        }
+        v.getChildren().add(roll);
+        Scene s = new Scene(v);
+        return s;
+    }
+
+    private static HBox connectedPropertyFields(){
+        HBox x = new HBox();
+        int[] diceArray = PropertyRoll.property();
+        Text dice = new Text();
+        Text result = new Text();
+        dice.setText(Arrays.toString(diceArray));
+        result.setText(Integer.toString(PropertyRoll.value(diceArray)));
+        x.getChildren().addAll(dice, result);
+        return x;
     }
 
 

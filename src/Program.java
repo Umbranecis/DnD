@@ -3,7 +3,7 @@ public enum Program{
     PROPERTIES("properties")
             {
                 public void runProgram(){
-                    PropertyRoll.printPropertyValues();
+                    Main.setMainStage(Visuals.propertyRoll());
 
                 }
             },

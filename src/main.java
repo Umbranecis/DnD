@@ -11,15 +11,24 @@ import static javafx.application.Application.launch;
 
 public class Main extends Application {
 
+
+    private static Stage mainStage = new Stage();
+
     public void start(Stage stage) throws Exception {
-        stage = Visuals.start();
-        stage.show();
+        mainStage.setScene(Visuals.start());
+        mainStage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
+   public static void setMainStage(Scene s) {
+        mainStage.setScene(s);
+
+    }
 }
+
 
 
 

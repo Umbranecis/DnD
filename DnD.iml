@@ -10,5 +10,7 @@
     <orderEntry type="library" name="dom4j-2.1.1" level="project" />
     <orderEntry type="library" name="javafx-sdk-11.0" level="project" />
     <orderEntry type="library" name="javafx-swt" level="project" />
+    <orderEntry type="library" name="commons-lang3-3.11-src" level="project" />
+    <orderEntry type="library" name="commons-lang3-3.11-javadoc" level="project" />
   </component>
 </module>
