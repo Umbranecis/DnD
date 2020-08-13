@@ -14,7 +14,7 @@ public class InitiativeList {
 
     public void sortList(){
         Collections.sort(finishedList, (a, b) -> {
-            return a.getInitiative().compareTo(b.getInitiative());
+            return b.getInitiative().compareTo(a.getInitiative());
         });
     }
 

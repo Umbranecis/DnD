@@ -12,7 +12,12 @@ import java.util.Arrays;
 import java.util.Scanner;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.*;
+
 public abstract class Visuals {
+
+
+
 
     public static Scene start(){
         sizedButton diceSimulator = new programButton("Start the Dice Simulator", "diceSimulator");
@@ -33,9 +38,9 @@ public abstract class Visuals {
         Button d20 = new sizedButton("normal d20");
         Button adv = new sizedButton("advantage d20");
         Button dadv = new sizedButton("disadvantaged d20");
-        Button cancel = new sizedButton("cancel");
+
         TextField dice = new TextField();
-        Text result = new Text();
+        InitiativeTableText result = new InitiativeTableText();
 
 
 
@@ -59,10 +64,10 @@ public abstract class Visuals {
         dadv.setOnAction(event -> {result.setText("" + DiceSimulator.disadvantage());
         });
 
-        cancel.setOnAction(event -> {Main.setMainStage(start());});
+
 
         HBox hbox = new HBox(dice, roll);
-        VBox buttons = new VBox(hbox, d20, adv, dadv, cancel);
+        VBox buttons = new VBox(hbox, d20, adv, dadv, new CancelButton());
         HBox pane = new HBox(buttons, result);
 
         Scene s = new Scene(pane);
@@ -73,7 +78,6 @@ public abstract class Visuals {
     public static Scene propertyRoll(){
         Button roll = new sizedButton("roll");
         VBox v = new VBox();
-        Button cancel = new sizedButton("cancel");
 
         roll.setOnAction(event -> Main.setMainStage(propertyRoll()));
 
@@ -83,10 +87,9 @@ public abstract class Visuals {
         v.getChildren().add(roll);
 
 
-        cancel.setOnAction(event -> {Main.setMainStage(start());});
 
 
-        v.getChildren().add(cancel);
+        v.getChildren().add(new CancelButton());
         Scene s = new Scene(v);
         return s;
     }
@@ -94,8 +97,8 @@ public abstract class Visuals {
     private static HBox connectedPropertyFields(){
         HBox x = new HBox();
         int[] diceArray = PropertyRoll.property();
-        Text dice = new Text();
-        Text result = new Text();
+        InitiativeTableText dice = new InitiativeTableText();
+        InitiativeTableText result = new InitiativeTableText();
         dice.setText(Arrays.toString(diceArray));
         result.setText(Integer.toString(PropertyRoll.value(diceArray)));
         x.getChildren().addAll(dice, result);
@@ -125,8 +128,8 @@ public abstract class Visuals {
         }
     }
 
-    public static Scene addToList (){
-        InitiativeList i = new InitiativeList();
+    public static Scene addToList (InitiativeList l){
+        InitiativeList i = l;
         Button add = new Button("add");
         TextField name = new TextField();
         TextField playerName = new TextField();
@@ -142,9 +145,13 @@ public abstract class Visuals {
         HBox h = new HBox();
         h.getChildren().addAll(name, playerName, initiative, add);
         VBox v = new VBox();
-        v.getChildren().addAll(h, createList);
+        v.getChildren().addAll(h, createList, new CancelButton());
         Scene s = new Scene(v);
         return s;
+    }
+
+    public static Scene addToList(){
+       return  addToList(new InitiativeList());
     }
 
     public static void clearAndAdd(TextField name, TextField playerName, TextField initiative, InitiativeList i){
@@ -158,25 +165,53 @@ public abstract class Visuals {
 
     public static Scene createList(InitiativeList l){
         VBox v = new VBox();
+        Button add = new sizedButton("add new Fighter");
+        add.setOnAction(event -> {Main.setMainStage(addToList(l));});
 
         if(true) {
             HBox h = new HBox();
-            Text n = new Text("characters name");
-            Text pn = new Text("players name");
-            Text i = new Text("initiative");
+            InitiativeTableText n = new InitiativeTableText("characters name");
+            InitiativeTableText pn = new InitiativeTableText("players name");
+            InitiativeTableText i = new InitiativeTableText("initiative");
             h.getChildren().addAll(n, pn, i);
             v.getChildren().add(h);
         }
 
         for(InitiativeList.Participiant p : l.getFinishedList()){
             HBox h = new HBox();
-            Text n = new Text(p.getName());
-            Text pn = new Text(p.getPlayerName());
-            Text i = new Text("" + p.getInitiative());
+            InitiativeTableText n = new InitiativeTableText(p.getName());
+            InitiativeTableText pn = new InitiativeTableText(p.getPlayerName());
+            InitiativeTableText i = new InitiativeTableText("" + p.getInitiative());
             h.getChildren().addAll(n, pn, i);
             v.getChildren().add(h);
         }
+        Button b = new CancelButton();
+        b.setText("return to main page");
+        v.getChildren().addAll(add, b);
+
         Scene s = new Scene(v);
         return s;
+    }
+
+    public static class InitiativeTableText extends TextField{
+        public InitiativeTableText(String s){
+            this.setText(s);
+            this.setEditable(false);
+            this.setPrefSize(150, 40);
+        }
+
+        public InitiativeTableText(){
+            this.setPrefSize(150,   40);
+            this.setEditable(false);
+        }
+
+    }
+
+    public static class CancelButton extends sizedButton{
+        public CancelButton(){
+            setOnAction(event -> Main.setMainStage(start()));
+            setText("cancel");
+        }
+
     }
 }
