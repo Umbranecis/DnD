@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class InitiativeList {
-    ArrayList<Participiant> finishedList = new ArrayList<Participiant>();
+    private ArrayList<Participiant> finishedList = new ArrayList<Participiant>();
 
     public ArrayList<Participiant> getFinishedList(){
         sortList();
@@ -22,6 +22,8 @@ public class InitiativeList {
         finishedList.add(p);
     }
 
+    public void addParticipant(String n, String pn, int i){finishedList.add(new Participiant(n,pn,i));};
+
     public void convertFighterAndAdd(Fighter f, int i){
         finishedList.add(new Participiant(f, i));
     }
@@ -35,6 +37,12 @@ public class InitiativeList {
             initiative = i;
             name = f.name;
             playerName = f.playerName;
+        }
+
+        public Participiant(String n, String pn, int i){
+            initiative = i;
+            name = n;
+            playerName = pn;
         }
         Integer getInitiative(){
             return initiative;

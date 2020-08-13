@@ -17,8 +17,9 @@ public abstract class Visuals {
     public static Scene start(){
         sizedButton diceSimulator = new programButton("Start the Dice Simulator", "diceSimulator");
         sizedButton properties = new programButton( "roll properties for a new Champion", "properties");
+        sizedButton initiativeList = new programButton("create an initiatrive List", "initiativeList");
         HBox pane = new HBox();
-        pane.getChildren().addAll(properties, diceSimulator);
+        pane.getChildren().addAll(properties, diceSimulator, initiativeList);
         Scene s = new Scene(pane);
         return s;
 
@@ -72,6 +73,7 @@ public abstract class Visuals {
     public static Scene propertyRoll(){
         Button roll = new sizedButton("roll");
         VBox v = new VBox();
+        Button cancel = new sizedButton("cancel");
 
         roll.setOnAction(event -> Main.setMainStage(propertyRoll()));
 
@@ -79,6 +81,12 @@ public abstract class Visuals {
             v.getChildren().add(connectedPropertyFields());
         }
         v.getChildren().add(roll);
+
+
+        cancel.setOnAction(event -> {Main.setMainStage(start());});
+
+
+        v.getChildren().add(cancel);
         Scene s = new Scene(v);
         return s;
     }
@@ -115,5 +123,60 @@ public abstract class Visuals {
             this.setOnAction(actionEvent -> Program.getByName(task).runProgram());
             this.setText(text);
         }
+    }
+
+    public static Scene addToList (){
+        InitiativeList i = new InitiativeList();
+        Button add = new Button("add");
+        TextField name = new TextField();
+        TextField playerName = new TextField();
+        TextField initiative = new TextField();
+        Button createList = new sizedButton("create List");
+
+        name.setPromptText("Character name");
+        playerName.setPromptText("player name");
+        initiative.setPromptText("initiative");
+
+        add.setOnAction(event -> clearAndAdd(name, playerName, initiative, i));
+        createList.setOnAction(event -> Main.setMainStage(createList(i)));
+        HBox h = new HBox();
+        h.getChildren().addAll(name, playerName, initiative, add);
+        VBox v = new VBox();
+        v.getChildren().addAll(h, createList);
+        Scene s = new Scene(v);
+        return s;
+    }
+
+    public static void clearAndAdd(TextField name, TextField playerName, TextField initiative, InitiativeList i){
+        i.addParticipant(name.getText(), playerName.getText(), Integer.parseInt(initiative.getText()));
+        name.clear();
+        playerName.clear();
+        initiative.clear();
+
+
+    }
+
+    public static Scene createList(InitiativeList l){
+        VBox v = new VBox();
+
+        if(true) {
+            HBox h = new HBox();
+            Text n = new Text("characters name");
+            Text pn = new Text("players name");
+            Text i = new Text("initiative");
+            h.getChildren().addAll(n, pn, i);
+            v.getChildren().add(h);
+        }
+
+        for(InitiativeList.Participiant p : l.getFinishedList()){
+            HBox h = new HBox();
+            Text n = new Text(p.getName());
+            Text pn = new Text(p.getPlayerName());
+            Text i = new Text("" + p.getInitiative());
+            h.getChildren().addAll(n, pn, i);
+            v.getChildren().add(h);
+        }
+        Scene s = new Scene(v);
+        return s;
     }
 }

@@ -12,6 +12,11 @@ public enum Program{
                 public void runProgram(){
                     Main.setMainStage(Visuals.diceSimulator());
                 }
+            },
+
+    INITIATIVELIST("initiativeList")
+            {
+                public void runProgram() {Main.setMainStage(Visuals.addToList());}
             };
 
 
