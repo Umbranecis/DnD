@@ -1,11 +1,6 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import org.dom4j.DocumentException;
-
-import java.util.Scanner;
 
 import static javafx.application.Application.launch;
 
@@ -23,13 +18,8 @@ public class Main extends Application {
         launch(args);
     }
 
-   public static void setMainStage(Scene s) {
+    public static void setMainStage(Scene s) {
         mainStage.setScene(s);
 
     }
 }
-
-
-
-
-

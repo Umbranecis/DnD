@@ -1,0 +1,18 @@
+<component name="ArtifactManager">
+  <artifact name="DnD_new">
+    <output-path>$PROJECT_DIR$/out/artifacts/DnD_new</output-path>
+    <root id="root">
+      <element id="archive" name="DnD.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$USER_HOME$/Documents/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="module-output" name="DnD" />
+        <element id="dir-copy" path="$USER_HOME$/Downloads/commons-lang3-3.11-src.tar" />
+        <element id="dir-copy" path="$USER_HOME$/Downloads/javafx-sdk-11.0.2" />
+      </element>
+      <element id="library" level="project" name="commons-lang3-3.11-javadoc" />
+      <element id="library" level="project" name="javafx-swt" />
+      <element id="library" level="project" name="dom4j-2.1.1" />
+    </root>
+  </artifact>
+</component>

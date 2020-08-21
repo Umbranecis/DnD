@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Main-Class: Main
+Class-Path: dom4j-2.1.1.jar javafx-swt.jar javafx.base.jar javafx.contro
+ ls.jar javafx.fxml.jar javafx.graphics.jar javafx.media.jar javafx.swin
+ g.jar javafx.web.jar commons-lang3-3.11-tests.jar commons-lang3-3.11.ja
+ r
+

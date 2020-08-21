@@ -1,7 +1,4 @@
 import Errors.NoValidDice;
-import Errors.BreakLoop;
-
-import java.util.Scanner;
 
 public abstract class DiceSimulator {
 

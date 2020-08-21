@@ -1,8 +1,5 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 
 public class InitiativeList {
     private ArrayList<Participiant> finishedList = new ArrayList<Participiant>();
@@ -27,6 +24,9 @@ public class InitiativeList {
     public void convertFighterAndAdd(Fighter f, int i){
         finishedList.add(new Participiant(f, i));
     }
+
+    public void kill(Participiant p){finishedList.remove(p);
+        sortList(); }
 
 
 

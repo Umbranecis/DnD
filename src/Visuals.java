@@ -1,18 +1,12 @@
 import Errors.NoValidDice;
-import com.sun.javafx.scene.control.InputField;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.util.Arrays;
-import java.util.Scanner;
-import org.apache.commons.lang3.StringUtils;
-
-import javax.swing.*;
 
 public abstract class Visuals {
 
@@ -128,34 +122,44 @@ public abstract class Visuals {
         }
     }
 
-    public static Scene addToList (InitiativeList l){
+    public static HBox addToList (InitiativeList l){
+        VBox v = new VBox();
+        HBox h = new HBox();
         InitiativeList i = l;
         Button add = new Button("add");
         TextField name = new TextField();
         TextField playerName = new TextField();
         TextField initiative = new TextField();
         Button createList = new sizedButton("create List");
+        Text error = new Text("");
 
         name.setPromptText("Character name");
         playerName.setPromptText("player name");
         initiative.setPromptText("initiative");
 
-        add.setOnAction(event -> clearAndAdd(name, playerName, initiative, i));
-        createList.setOnAction(event -> Main.setMainStage(createList(i)));
-        HBox h = new HBox();
-        h.getChildren().addAll(name, playerName, initiative, add);
-        VBox v = new VBox();
-        v.getChildren().addAll(h, createList, new CancelButton());
-        Scene s = new Scene(v);
-        return s;
+        add.setOnAction(event -> {try{clearAndAdd(name, playerName, initiative, l);
+                               error.setText("");
+                                Main.setMainStage(createlist(i));
+        }
+        catch (noIntegerAsInitiative n){error.setText("please insert a valid number");}
+        });
+
+        createList.setOnAction(event -> Main.setMainStage(createlist(i)));
+
+        h.getChildren().addAll(name, playerName, initiative, add, error);
+
+        return h;
     }
 
-    public static Scene addToList(){
+    public static HBox addToList(){
        return  addToList(new InitiativeList());
     }
 
-    public static void clearAndAdd(TextField name, TextField playerName, TextField initiative, InitiativeList i){
-        i.addParticipant(name.getText(), playerName.getText(), Integer.parseInt(initiative.getText()));
+    public static void clearAndAdd(TextField name, TextField playerName, TextField initiative, InitiativeList i) throws noIntegerAsInitiative{
+        try{i.addParticipant(name.getText(), playerName.getText(), Integer.parseInt(initiative.getText()));}
+        catch (NumberFormatException e)
+        {throw new noIntegerAsInitiative();}
+
         name.clear();
         playerName.clear();
         initiative.clear();
@@ -163,10 +167,10 @@ public abstract class Visuals {
 
     }
 
-    public static Scene createList(InitiativeList l){
+    public static Scene createlist(InitiativeList l){
         VBox v = new VBox();
         Button add = new sizedButton("add new Fighter");
-        add.setOnAction(event -> {Main.setMainStage(addToList(l));});
+        //add.setOnAction(event -> {Main.setMainStage(addToList(l));});
 
         if(true) {
             HBox h = new HBox();
@@ -182,15 +186,22 @@ public abstract class Visuals {
             InitiativeTableText n = new InitiativeTableText(p.getName());
             InitiativeTableText pn = new InitiativeTableText(p.getPlayerName());
             InitiativeTableText i = new InitiativeTableText("" + p.getInitiative());
-            h.getChildren().addAll(n, pn, i);
+            Button b = new Button("remove from list");
+            b.setOnAction(event -> {killAndCreate(p, l);});
+            h.getChildren().addAll(n, pn, i, b);
             v.getChildren().add(h);
         }
         Button b = new CancelButton();
         b.setText("return to main page");
-        v.getChildren().addAll(add, b);
+        v.getChildren().addAll(addToList(l), b);
 
         Scene s = new Scene(v);
         return s;
+    }
+
+    public static void killAndCreate(InitiativeList.Participiant p, InitiativeList l){
+        l.kill(p);
+        Main.setMainStage(createlist(l));
     }
 
     public static class InitiativeTableText extends TextField{
@@ -214,4 +225,7 @@ public abstract class Visuals {
         }
 
     }
+
+    static class noIntegerAsInitiative extends Error
+    {}
 }
