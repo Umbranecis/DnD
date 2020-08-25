@@ -5,6 +5,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 
 import java.util.Arrays;
 
@@ -17,6 +18,8 @@ public abstract class Visuals {
         sizedButton diceSimulator = new programButton("Start the Dice Simulator", "diceSimulator");
         sizedButton properties = new programButton( "roll properties for a new Champion", "properties");
         sizedButton initiativeList = new programButton("create an initiatrive List", "initiativeList");
+       // sizedButton a = new sizedButton();
+       // a.setOnAction(event -> FileManager.getGroup().forEach(fighter -> {System.out.println(fighter.name);}));
         HBox pane = new HBox();
         pane.getChildren().addAll(properties, diceSimulator, initiativeList);
         Scene s = new Scene(pane);

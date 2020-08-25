@@ -1,11 +1,11 @@
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import static javafx.application.Application.launch;
 
 public class Main extends Application {
-
 
     private static Stage mainStage = new Stage();
 
@@ -16,6 +16,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
+
     }
 
     public static void setMainStage(Scene s) {
