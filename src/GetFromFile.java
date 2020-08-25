@@ -1,3 +1,8 @@
+import javafx.application.Application;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,9 +12,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Scanner;
 
-public class GetFromFile {
+public class GetFromFile extends Application {
+    @Override
+    public void start(Stage primaryStage) throws Exception {}
 
-    public Collection<Fighter> getGroup(File f){
+    public static Collection<Fighter> getGroup(File f){
         ArrayList<Fighter> returnList = new ArrayList<Fighter>();
         Collection<String> input= new HashSet<String>();
         try {
@@ -25,4 +32,10 @@ public class GetFromFile {
 
         return returnList;
     }
+
+ /*   public static File selectGroup(){
+
+    }*/
+
+
 }

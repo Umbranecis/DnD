@@ -22,4 +22,6 @@ public class Main extends Application {
         mainStage.setScene(s);
 
     }
+
+    public static Stage getMainStage(){return mainStage;}
 }
