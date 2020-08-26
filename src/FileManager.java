@@ -59,7 +59,7 @@ public class FileManager {
     }
 
 
-    public static Collection<Fighter> getEncounter(){return getEncounter(selectGroup());}
+    public static Collection<Fighter> getEncounter(){return getEncounter(selectEncounter());}
 
     public static File selectEncounter(){
         FileChooser f = new FileChooser();

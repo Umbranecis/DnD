@@ -2,34 +2,31 @@ import Errors.NoValidDice;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.scene.input.KeyEvent;
 
 import java.util.Arrays;
 
 public abstract class Visuals {
 
 
-
-
-    public static Scene start(){
+    public static Scene start() {
         sizedButton diceSimulator = new programButton("Start the Dice Simulator", "diceSimulator");
-        sizedButton properties = new programButton( "roll properties for a new Champion", "properties");
+        sizedButton properties = new programButton("roll properties for a new Champion", "properties");
         sizedButton initiativeList = new programButton("create an initiatrive List", "initiativeList");
-       // sizedButton a = new sizedButton();
-       // a.setOnAction(event -> FileManager.getGroup().forEach(fighter -> {System.out.println(fighter.name);}));
         HBox pane = new HBox();
         pane.getChildren().addAll(properties, diceSimulator, initiativeList);
         Scene s = new Scene(pane);
         return s;
 
 
-
     }
 
-    public static Scene diceSimulator(){
+    public static Scene diceSimulator() {
 
         Button roll = new sizedButton("roll");
         Button d20 = new sizedButton("normal d20");
@@ -39,15 +36,16 @@ public abstract class Visuals {
         TextField dice = new TextField();
         InitiativeTableText result = new InitiativeTableText();
 
-
-
         dice.setPromptText("insert your dice. example: 2d4+1");
+
+
         roll.setOnAction(event -> {
             try {
-            result.setText("" + DiceSimulator.roll(dice.getText()));
-        } catch (NoValidDice noValidDice) {
-            result.setText("please insert a valid dice");
-        }
+                result.setText("" + DiceSimulator.roll(dice.getText()));
+            } catch (NoValidDice noValidDice) {
+                result.setText("please insert a valid dice");
+            }
+
         });
 
         d20.setOnAction(event -> {
@@ -58,9 +56,9 @@ public abstract class Visuals {
             result.setText("" + DiceSimulator.advantage());
         });
 
-        dadv.setOnAction(event -> {result.setText("" + DiceSimulator.disadvantage());
+        dadv.setOnAction(event -> {
+            result.setText("" + DiceSimulator.disadvantage());
         });
-
 
 
         HBox hbox = new HBox(dice, roll);
@@ -69,29 +67,42 @@ public abstract class Visuals {
 
         Scene s = new Scene(pane);
 
+        s.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                roll.fire();
+            }
+        });
+
         return s;
     }
 
-    public static Scene propertyRoll(){
+
+    public static Scene propertyRoll() {
         Button roll = new sizedButton("roll");
         VBox v = new VBox();
 
+
         roll.setOnAction(event -> Main.setMainStage(propertyRoll()));
 
-        for (int i = 6; i>0; i--){
+        for (int i = 6; i > 0; i--) {
             v.getChildren().add(connectedPropertyFields());
         }
         v.getChildren().add(roll);
 
 
-
-
         v.getChildren().add(new CancelButton());
         Scene s = new Scene(v);
+
+        s.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){
+                roll.fire();
+            }
+        });
+
         return s;
     }
 
-    private static HBox connectedPropertyFields(){
+    private static HBox connectedPropertyFields() {
         HBox x = new HBox();
         int[] diceArray = PropertyRoll.property();
         InitiativeTableText dice = new InitiativeTableText();
@@ -103,29 +114,7 @@ public abstract class Visuals {
     }
 
 
-
-
-    static class sizedButton extends Button{
-        public sizedButton(String s){
-            setText(s);
-            setPrefSize(400, 100);
-
-        }
-        public sizedButton(){
-            setPrefSize(400, 100);
-        };
-
-
-    }
-
-    static class programButton extends sizedButton{
-        public programButton(String text, String task){
-            this.setOnAction(actionEvent -> Program.getByName(task).runProgram());
-            this.setText(text);
-        }
-    }
-
-    public static HBox addToList (InitiativeList l){
+    public static HBox addToList(InitiativeList l) {
         VBox v = new VBox();
         HBox h = new HBox();
         InitiativeList i = l;
@@ -140,28 +129,36 @@ public abstract class Visuals {
         playerName.setPromptText("player name");
         initiative.setPromptText("initiative");
 
-        add.setOnAction(event -> {try{clearAndAdd(name, playerName, initiative, l);
-                               error.setText("");
-                                Main.setMainStage(createlist(i));
-        }
-        catch (noIntegerAsInitiative n){error.setText("please insert a valid number");}
+
+
+
+        add.setOnAction(event -> {
+            try {
+                clearAndAdd(name, playerName, initiative, l);
+                error.setText("");
+                Main.setMainStage(createlist(i));
+            } catch (noIntegerAsInitiative n) {
+                error.setText("please insert a valid number");
+            }
         });
 
         createList.setOnAction(event -> Main.setMainStage(createlist(i)));
 
         h.getChildren().addAll(name, playerName, initiative, add, error);
 
+        h.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER)){add.fire();}
+        });
+
         return h;
     }
 
-    public static HBox addToList(){
-       return  addToList(new InitiativeList());
-    }
-
-    public static void clearAndAdd(TextField name, TextField playerName, TextField initiative, InitiativeList i) throws noIntegerAsInitiative{
-        try{i.addParticipant(name.getText(), playerName.getText(), Integer.parseInt(initiative.getText()));}
-        catch (NumberFormatException e)
-        {throw new noIntegerAsInitiative();}
+    public static void clearAndAdd(TextField name, TextField playerName, TextField initiative, InitiativeList i) throws noIntegerAsInitiative {
+        try {
+            i.addParticipant(name.getText(), playerName.getText(), Integer.parseInt(initiative.getText()));
+        } catch (NumberFormatException e) {
+            throw new noIntegerAsInitiative();
+        }
 
         name.clear();
         playerName.clear();
@@ -170,65 +167,91 @@ public abstract class Visuals {
 
     }
 
-    public static Scene createlist(InitiativeList l){
+    public static Scene createlist(InitiativeList l) {
         VBox v = new VBox();
-        Button add = new sizedButton("add new Fighter");
-        //add.setOnAction(event -> {Main.setMainStage(addToList(l));});
-
-        if(true) {
-            HBox h = new HBox();
-            InitiativeTableText n = new InitiativeTableText("characters name");
-            InitiativeTableText pn = new InitiativeTableText("players name");
-            InitiativeTableText i = new InitiativeTableText("initiative");
-            h.getChildren().addAll(n, pn, i);
-            v.getChildren().add(h);
-        }
-
-        for(InitiativeList.Participiant p : l.getFinishedList()){
-            HBox h = new HBox();
-            InitiativeTableText n = new InitiativeTableText(p.getName());
-            InitiativeTableText pn = new InitiativeTableText(p.getPlayerName());
-            InitiativeTableText i = new InitiativeTableText("" + p.getInitiative());
-            Button b = new Button("remove from list");
-            b.setOnAction(event -> {killAndCreate(p, l);});
-            h.getChildren().addAll(n, pn, i, b);
-            v.getChildren().add(h);
-        }
         Button b = new CancelButton();
+
+
         b.setText("return to main page");
+        HBox h = new HBox();
+        InitiativeTableText n = new InitiativeTableText("characters name");
+        InitiativeTableText pn = new InitiativeTableText("players name");
+        InitiativeTableText i = new InitiativeTableText("initiative");
+        h.getChildren().addAll(n, pn, i);
+        v.getChildren().add(h);
+
+
+        for (InitiativeList.Participiant p : l.getFinishedList()) {
+            h = new HBox();
+            n = new InitiativeTableText(p.getName());
+            pn = new InitiativeTableText(p.getPlayerName());
+            i = new InitiativeTableText("" + p.getInitiative());
+            Button remove = new Button("remove from list");
+            remove.setOnAction(event -> {
+                l.kill(p);
+                Main.setMainStage(createlist(l));
+            });
+
+
+            h.getChildren().addAll(n, pn, i, remove);
+            v.getChildren().add(h);
+        }
+
+
+
         v.getChildren().addAll(addToList(l), b);
 
         Scene s = new Scene(v);
         return s;
     }
 
-    public static void killAndCreate(InitiativeList.Participiant p, InitiativeList l){
-        l.kill(p);
-        Main.setMainStage(createlist(l));
-    }
 
-    public static class InitiativeTableText extends TextField{
-        public InitiativeTableText(String s){
+    public static class InitiativeTableText extends TextField {
+        public InitiativeTableText(String s) {
             this.setText(s);
             this.setEditable(false);
             this.setPrefSize(150, 40);
         }
 
-        public InitiativeTableText(){
-            this.setPrefSize(150,   40);
+        public InitiativeTableText() {
+            this.setPrefSize(150, 40);
             this.setEditable(false);
         }
 
     }
 
-    public static class CancelButton extends sizedButton{
-        public CancelButton(){
+
+    public static class CancelButton extends sizedButton {
+        public CancelButton() {
             setOnAction(event -> Main.setMainStage(start()));
             setText("cancel");
         }
 
     }
 
-    static class noIntegerAsInitiative extends Error
-    {}
+    static class noIntegerAsInitiative extends Error {
+    }
+
+    static class sizedButton extends Button {
+        public sizedButton(String s) {
+            setText(s);
+            setPrefSize(400, 100);
+
+        }
+
+        public sizedButton() {
+            setPrefSize(400, 100);
+        }
+
+        ;
+
+
+    }
+
+    static class programButton extends sizedButton {
+        public programButton(String text, String task) {
+            this.setOnAction(actionEvent -> Program.getByName(task).runProgram());
+            this.setText(text);
+        }
+    }
 }
