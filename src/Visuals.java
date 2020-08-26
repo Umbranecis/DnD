@@ -17,7 +17,7 @@ public abstract class Visuals {
     public static Scene start() {
         sizedButton diceSimulator = new programButton("Start the Dice Simulator", "diceSimulator");
         sizedButton properties = new programButton("roll properties for a new Champion", "properties");
-        sizedButton initiativeList = new programButton("create an initiatrive List", "initiativeList");
+        sizedButton initiativeList = new programButton("create an initiative List", "initiativeList");
         HBox pane = new HBox();
         pane.getChildren().addAll(properties, diceSimulator, initiativeList);
         Scene s = new Scene(pane);
@@ -45,6 +45,7 @@ public abstract class Visuals {
             } catch (NoValidDice noValidDice) {
                 result.setText("please insert a valid dice");
             }
+            dice.setText("");
 
         });
 
