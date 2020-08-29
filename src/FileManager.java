@@ -1,19 +1,12 @@
-import javafx.application.Application;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Scanner;
+import java.io.*;
+import java.lang.management.BufferPoolMXBean;
+import java.util.*;
 
-public class FileManager {
-
+public abstract class FileManager {
+    public static final String ENCOUNTER = "/Users/nils/IdeaProjects/DnD/src/Encounters";
+    public static final String GROUP = "/Users/nils/IdeaProjects/DnD/src/Groups";
     public static Collection<Fighter> getGroup(File f){
         ArrayList<Fighter> returnList = new ArrayList<Fighter>();
         Collection<String> input= new HashSet<String>();
@@ -33,7 +26,7 @@ public class FileManager {
 
     public static File selectGroup(){
         FileChooser f = new FileChooser();
-        f.setInitialDirectory(new File("/Users/nils/IdeaProjects/DnD/src/Groups"));
+        f.setInitialDirectory(new File(GROUP));
         return f.showOpenDialog(null);
     }
 
@@ -52,7 +45,10 @@ public class FileManager {
         }   catch (FileNotFoundException e) { }
 
         for (String s : input){
-            returnList.add(new Fighter(s, "DM"));
+            String[] inputStrings = s.split(":");
+            for(int i = Integer.parseInt(inputStrings[1]); i>0; i--){
+            returnList.add(new Fighter(inputStrings[0], "DM"));
+            }
         }
 
         return returnList;
@@ -63,8 +59,37 @@ public class FileManager {
 
     public static File selectEncounter(){
         FileChooser f = new FileChooser();
-        f.setInitialDirectory(new File("/Users/nils/IdeaProjects/DnD/src/Encounters"));
+        f.setInitialDirectory(new File(ENCOUNTER));
         return f.showOpenDialog(null);
+    }
+
+
+    public static void addEncounter(HashMap<String, Integer> input, String name){
+        File f = new File(ENCOUNTER + "/" + name + ".txt");
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        BufferedWriter writer = null;
+        try {
+            writer =new BufferedWriter(new FileWriter(f));
+            for(String s : input.keySet()) {
+                writer.write(s + ":" + input.get(s));
+                writer.newLine();
+            }
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
 
 
