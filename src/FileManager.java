@@ -86,10 +86,25 @@ public abstract class FileManager {
             e.printStackTrace();
         }
 
+    }
 
+    public static void addGroup(ArrayList<Fighter> input, String name){
+        File f = new File(GROUP + "/" + name + ".txt");
+        try {
+            f.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
-
+        BufferedWriter writer = null;
+        try{
+            writer = new BufferedWriter(new FileWriter(f));
+            for(Fighter fighter : input){
+                writer.write(fighter.name + ":" + fighter.playerName);
+            }
+            writer.close();
+        }
+        catch(Exception ex){}
     }
 
 
