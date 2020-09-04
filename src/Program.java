@@ -16,7 +16,7 @@ public enum Program{
 
     INITIATIVELIST("initiativeList")
             {
-                public void runProgram() {Main.setMainStage(Visuals.createlist(new InitiativeList()));}
+                public void runProgram() {Main.setMainStage(Visuals.visibleList(new InitiativeList()));}
             };
 
 

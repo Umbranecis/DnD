@@ -1,4 +1,5 @@
 import Errors.NoValidDice;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -6,18 +7,16 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.scene.input.KeyEvent;
 
-import java.util.Arrays;
+import java.util.*;
 
 public abstract class Visuals {
 
 
     public static Scene start() {
-        sizedButton diceSimulator = new programButton("Start the Dice Simulator", "diceSimulator");
-        sizedButton properties = new programButton("roll properties for a new Champion", "properties");
-        sizedButton initiativeList = new programButton("create an initiative List", "initiativeList");
+        SizedButton diceSimulator = new ProgramButton("Start the Dice Simulator", "diceSimulator");
+        SizedButton properties = new ProgramButton("roll properties for a new Champion", "properties");
+        SizedButton initiativeList = new ProgramButton("create an initiative List", "initiativeList");
         HBox pane = new HBox();
         pane.getChildren().addAll(properties, diceSimulator, initiativeList);
         Scene s = new Scene(pane);
@@ -28,10 +27,10 @@ public abstract class Visuals {
 
     public static Scene diceSimulator() {
 
-        Button roll = new sizedButton("roll");
-        Button d20 = new sizedButton("normal d20");
-        Button adv = new sizedButton("advantage d20");
-        Button dadv = new sizedButton("disadvantaged d20");
+        Button roll = new SizedButton("roll");
+        Button d20 = new SizedButton("normal d20");
+        Button adv = new SizedButton("advantage d20");
+        Button dadv = new SizedButton("disadvantaged d20");
 
         TextField dice = new TextField();
         InitiativeTableText result = new InitiativeTableText();
@@ -69,7 +68,7 @@ public abstract class Visuals {
         Scene s = new Scene(pane);
 
         s.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 roll.fire();
             }
         });
@@ -79,7 +78,7 @@ public abstract class Visuals {
 
 
     public static Scene propertyRoll() {
-        Button roll = new sizedButton("roll");
+        Button roll = new SizedButton("roll");
         VBox v = new VBox();
 
 
@@ -95,7 +94,7 @@ public abstract class Visuals {
         Scene s = new Scene(v);
 
         s.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){
+            if (event.getCode().equals(KeyCode.ENTER)) {
                 roll.fire();
             }
         });
@@ -120,35 +119,29 @@ public abstract class Visuals {
         HBox h = new HBox();
         InitiativeList i = l;
         Button add = new Button("add");
-        TextField name = new TextField();
-        TextField playerName = new TextField();
-        TextField initiative = new TextField();
-        Button createList = new sizedButton("create List");
+        TextField name = new SizedInputField("Character name");
+        TextField playerName = new SizedInputField("player name");
+        TextField initiative = new SizedInputField("initiative");
         Text error = new Text("");
-
-        name.setPromptText("Character name");
-        playerName.setPromptText("player name");
-        initiative.setPromptText("initiative");
-
-
 
 
         add.setOnAction(event -> {
             try {
                 clearAndAdd(name, playerName, initiative, l);
                 error.setText("");
-                Main.setMainStage(createlist(i));
+                Main.setMainStage(visibleList(i));
             } catch (noIntegerAsInitiative n) {
                 error.setText("please insert a valid number");
             }
         });
 
-        createList.setOnAction(event -> Main.setMainStage(createlist(i)));
 
         h.getChildren().addAll(name, playerName, initiative, add, error);
 
         h.setOnKeyPressed(event -> {
-            if(event.getCode().equals(KeyCode.ENTER)){add.fire();}
+            if (event.getCode().equals(KeyCode.ENTER)) {
+                add.fire();
+            }
         });
 
         return h;
@@ -168,16 +161,18 @@ public abstract class Visuals {
 
     }
 
-    public static Scene createlist(InitiativeList l) {
+    public static Scene visibleList(InitiativeList l) {
         VBox v = new VBox();
-        Button b = new CancelButton();
+        Button cancelButton = new CancelButton();
 
 
-        b.setText("return to main page");
+        cancelButton.setText("return to main page");
         HBox h = new HBox();
         InitiativeTableText n = new InitiativeTableText("characters name");
         InitiativeTableText pn = new InitiativeTableText("players name");
         InitiativeTableText i = new InitiativeTableText("initiative");
+        SizedButton createNewGroup = new SizedButton("create new Group");
+        SizedButton createNewEncounter = new SizedButton("create new Encounter");
         h.getChildren().addAll(n, pn, i);
         v.getChildren().add(h);
 
@@ -190,7 +185,7 @@ public abstract class Visuals {
             Button remove = new Button("remove from list");
             remove.setOnAction(event -> {
                 l.kill(p);
-                Main.setMainStage(createlist(l));
+                Main.setMainStage(visibleList(l));
             });
 
 
@@ -198,12 +193,80 @@ public abstract class Visuals {
             v.getChildren().add(h);
         }
 
+        createNewGroup.setOnAction(event -> {
+            Main.setMainStage(addGroupToFile(l));
+        });
 
 
-        v.getChildren().addAll(addToList(l), b);
+        HBox addButtons = new HBox(createNewGroup, createNewEncounter);
+
+        v.getChildren().addAll(addToList(l), addButtons, cancelButton);
 
         Scene s = new Scene(v);
         return s;
+    }
+
+    public static Scene addGroupToFile(InitiativeList input) {
+        ArrayList<Fighter> returnList = new ArrayList<Fighter>();
+        SizedInputField fileName = new SizedInputField("filename");
+        SizedInputField name = new SizedInputField("character name");
+        SizedInputField playerName = new SizedInputField("player name");
+        SizedButton add = new SizedButton("add");
+        SizedButton submit = new SizedButton("submit");
+
+        VBox vbox = new VBox();
+        HBox names = new HBox();
+        HBox createFile = new HBox();
+
+        names.getChildren().addAll(name, playerName, add);
+        createFile.getChildren().addAll(fileName, submit);
+        vbox.getChildren().addAll(names, createFile);
+
+        add.setOnAction(event -> {
+            returnList.add(new Fighter(name.getText(), playerName.getText()));
+            name.clear();
+            playerName.clear();
+        });
+        submit.setOnAction(event -> {
+            FileManager.addGroup(returnList, fileName.getText());
+            Main.setMainStage(visibleList(input));
+        });
+
+
+        return new Scene(vbox);
+    }
+
+    public static Scene addEncounterToFile(InitiativeList input) {
+        HashMap<String, Integer> returnList = new HashMap<String, Integer>();
+        SizedInputField fileName = new SizedInputField("filename");
+        SizedInputField name = new SizedInputField("monsters name");
+        SizedInputField amt = new SizedInputField("amount");
+        SizedButton add = new SizedButton("add");
+        SizedButton submit = new SizedButton("submit");
+
+        VBox vbox = new VBox();
+        HBox names = new HBox();
+        HBox createFile = new HBox();
+        names.getChildren().addAll(name, amt, add);
+        createFile.getChildren().addAll(fileName, submit);
+        vbox.getChildren().addAll(names, createFile);
+
+        add.setOnAction(event -> {
+            try {
+                returnList.put(name.getText(), Integer.parseInt(amt.getText()));
+                name.clear();
+                amt.clear();
+            } catch (Exception ex) {
+            }
+
+        });
+
+        submit.setOnAction(event -> {
+            FileManager.addEncounter(returnList, fileName.getText());
+            Main.setMainStage(visibleList(input));
+        });
+
+        return new Scene(vbox);
     }
 
 
@@ -221,8 +284,20 @@ public abstract class Visuals {
 
     }
 
+    public static class SizedInputField extends TextField {
+        public SizedInputField() {
+            setPrefSize(150, 40);
+        }
 
-    public static class CancelButton extends sizedButton {
+        public SizedInputField(String promttext) {
+            setPrefSize(150, 40);
+            setPromptText(promttext);
+        }
+
+    }
+
+
+    public static class CancelButton extends SizedButton {
         public CancelButton() {
             setOnAction(event -> Main.setMainStage(start()));
             setText("cancel");
@@ -233,14 +308,14 @@ public abstract class Visuals {
     static class noIntegerAsInitiative extends Error {
     }
 
-    static class sizedButton extends Button {
-        public sizedButton(String s) {
+    static class SizedButton extends Button {
+        public SizedButton(String s) {
             setText(s);
             setPrefSize(400, 100);
 
         }
 
-        public sizedButton() {
+        public SizedButton() {
             setPrefSize(400, 100);
         }
 
@@ -249,8 +324,8 @@ public abstract class Visuals {
 
     }
 
-    static class programButton extends sizedButton {
-        public programButton(String text, String task) {
+    static class ProgramButton extends SizedButton {
+        public ProgramButton(String text, String task) {
             this.setOnAction(actionEvent -> Program.getByName(task).runProgram());
             this.setText(text);
         }

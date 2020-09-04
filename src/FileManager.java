@@ -101,11 +101,15 @@ public abstract class FileManager {
             writer = new BufferedWriter(new FileWriter(f));
             for(Fighter fighter : input){
                 writer.write(fighter.name + ":" + fighter.playerName);
+                writer.newLine();
             }
             writer.close();
         }
         catch(Exception ex){}
     }
+
+
+
 
 
 
