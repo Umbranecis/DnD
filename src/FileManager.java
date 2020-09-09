@@ -7,6 +7,9 @@ import java.util.*;
 public abstract class FileManager {
     public static final String ENCOUNTER = "/Users/nils/IdeaProjects/DnD/src/Encounters";
     public static final String GROUP = "/Users/nils/IdeaProjects/DnD/src/Groups";
+
+
+
     public static Collection<Fighter> getGroup(File f){
         ArrayList<Fighter> returnList = new ArrayList<Fighter>();
         Collection<String> input= new HashSet<String>();

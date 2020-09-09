@@ -1,5 +1,4 @@
 import Errors.NoValidDice;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -33,7 +32,7 @@ public abstract class Visuals {
         Button dadv = new SizedButton("disadvantaged d20");
 
         TextField dice = new TextField();
-        InitiativeTableText result = new InitiativeTableText();
+        SizedTextField result = new SizedTextField();
 
         dice.setPromptText("insert your dice. example: 2d4+1");
 
@@ -105,8 +104,8 @@ public abstract class Visuals {
     private static HBox connectedPropertyFields() {
         HBox x = new HBox();
         int[] diceArray = PropertyRoll.property();
-        InitiativeTableText dice = new InitiativeTableText();
-        InitiativeTableText result = new InitiativeTableText();
+        SizedTextField dice = new SizedTextField();
+        SizedTextField result = new SizedTextField();
         dice.setText(Arrays.toString(diceArray));
         result.setText(Integer.toString(PropertyRoll.value(diceArray)));
         x.getChildren().addAll(dice, result);
@@ -168,9 +167,9 @@ public abstract class Visuals {
 
         cancelButton.setText("return to main page");
         HBox h = new HBox();
-        InitiativeTableText n = new InitiativeTableText("characters name");
-        InitiativeTableText pn = new InitiativeTableText("players name");
-        InitiativeTableText i = new InitiativeTableText("initiative");
+        SizedTextField n = new SizedTextField("characters name");
+        SizedTextField pn = new SizedTextField("players name");
+        SizedTextField i = new SizedTextField("initiative");
         SizedButton createNewGroup = new SizedButton("create new Group");
         SizedButton createNewEncounter = new SizedButton("create new Encounter");
         h.getChildren().addAll(n, pn, i);
@@ -179,9 +178,9 @@ public abstract class Visuals {
 
         for (InitiativeList.Participiant p : l.getFinishedList()) {
             h = new HBox();
-            n = new InitiativeTableText(p.getName());
-            pn = new InitiativeTableText(p.getPlayerName());
-            i = new InitiativeTableText("" + p.getInitiative());
+            n = new SizedTextField(p.getName());
+            pn = new SizedTextField(p.getPlayerName());
+            i = new SizedTextField("" + p.getInitiative());
             Button remove = new Button("remove from list");
             remove.setOnAction(event -> {
                 l.kill(p);
@@ -195,6 +194,10 @@ public abstract class Visuals {
 
         createNewGroup.setOnAction(event -> {
             Main.setMainStage(addGroupToFile(l));
+        });
+
+        createNewEncounter.setOnAction(event -> {
+            Main.setMainStage(addEncounterToFile(l));
         });
 
 
@@ -269,15 +272,38 @@ public abstract class Visuals {
         return new Scene(vbox);
     }
 
+    public static Scene addGroupToList(InitiativeList input, ArrayList<Fighter> fighterList){
 
-    public static class InitiativeTableText extends TextField {
-        public InitiativeTableText(String s) {
+        HBox pane = new HBox();
+        for (Fighter f : fighterList){
+
+            VBox vbox = new VBox();
+            SizedTextField name = new SizedTextField(f.name);
+            SizedTextField playername = new SizedTextField(f.playerName);
+            SizedInputField initiative = new SizedInputField("initiative");
+            Button add = new Button("add");
+
+            vbox.getChildren().addAll(name,playername,initiative,add);
+            pane.getChildren().add(vbox);
+            add.setOnAction(event -> {
+                    clearAndAdd(name,playername,initiative,input);
+        });
+        }
+
+
+
+        return null;
+    }
+
+
+    public static class SizedTextField extends TextField {
+        public SizedTextField(String s) {
             this.setText(s);
             this.setEditable(false);
             this.setPrefSize(150, 40);
         }
 
-        public InitiativeTableText() {
+        public SizedTextField() {
             this.setPrefSize(150, 40);
             this.setEditable(false);
         }
