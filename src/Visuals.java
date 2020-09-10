@@ -129,7 +129,7 @@ public abstract class Visuals {
                 clearAndAdd(name, playerName, initiative, l);
                 error.setText("");
                 Main.setMainStage(visibleList(i));
-            } catch (noIntegerAsInitiative n) {
+            } catch (NoIntegerAsInitiative n) {
                 error.setText("please insert a valid number");
             }
         });
@@ -146,11 +146,11 @@ public abstract class Visuals {
         return h;
     }
 
-    public static void clearAndAdd(TextField name, TextField playerName, TextField initiative, InitiativeList i) throws noIntegerAsInitiative {
+    public static void clearAndAdd(TextField name, TextField playerName, TextField initiative, InitiativeList i) throws NoIntegerAsInitiative {
         try {
             i.addParticipant(name.getText(), playerName.getText(), Integer.parseInt(initiative.getText()));
         } catch (NumberFormatException e) {
-            throw new noIntegerAsInitiative();
+            throw new NoIntegerAsInitiative();
         }
 
         name.clear();
@@ -172,6 +172,9 @@ public abstract class Visuals {
         SizedTextField i = new SizedTextField("initiative");
         SizedButton createNewGroup = new SizedButton("create new Group");
         SizedButton createNewEncounter = new SizedButton("create new Encounter");
+        SizedButton addGroup = new SizedButton("add Group to list");
+        SizedButton addEncounter = new SizedButton("add Encounter to list");
+
         h.getChildren().addAll(n, pn, i);
         v.getChildren().add(h);
 
@@ -200,10 +203,15 @@ public abstract class Visuals {
             Main.setMainStage(addEncounterToFile(l));
         });
 
+        addGroup.setOnAction(event -> {
+            Main.setMainStage(addGroupToList(l, FileManager.getGroup()));
+        });
 
-        HBox addButtons = new HBox(createNewGroup, createNewEncounter);
 
-        v.getChildren().addAll(addToList(l), addButtons, cancelButton);
+        HBox createButtons = new HBox(createNewGroup, createNewEncounter);
+        HBox addButtons = new HBox(addGroup, addEncounter);
+
+        v.getChildren().addAll(addToList(l), createButtons, addButtons, cancelButton);
 
         Scene s = new Scene(v);
         return s;
@@ -272,27 +280,56 @@ public abstract class Visuals {
         return new Scene(vbox);
     }
 
-    public static Scene addGroupToList(InitiativeList input, ArrayList<Fighter> fighterList){
+    public static Scene addGroupToList(InitiativeList input, Collection<Fighter> fighterList){
 
-        HBox pane = new HBox();
+        VBox pane = new VBox();
+        Button submit = new SizedButton();
+        Collection<Button> addButtons = new HashSet<Button>();
+        Collection<Button> failedButtons = new HashSet<>();
         for (Fighter f : fighterList){
 
-            VBox vbox = new VBox();
+            HBox hBox = new HBox();
             SizedTextField name = new SizedTextField(f.name);
             SizedTextField playername = new SizedTextField(f.playerName);
             SizedInputField initiative = new SizedInputField("initiative");
-            Button add = new Button("add");
+            Button add = new Button();
+            Text error = new Text("");
+            addButtons.add(add);
 
-            vbox.getChildren().addAll(name,playername,initiative,add);
-            pane.getChildren().add(vbox);
+            hBox.getChildren().addAll(name,playername,initiative, error);
+            pane.getChildren().add(hBox);
             add.setOnAction(event -> {
-                    clearAndAdd(name,playername,initiative,input);
-        });
+                try {
+                    clearAndAdd(name, playername, initiative, input);
+                    pane.getChildren().remove(hBox);
+                }
+                catch (NoIntegerAsInitiative noIntegerAsInitiative){
+                        failedButtons.add(add);
+                        error.setText("please insert a valid number");
+                    }
+
+                });
         }
 
+        submit.setOnAction(event -> {
+                for (Button button: addButtons){
+
+                    button.fire();
+
+            }
+                    if(failedButtons.isEmpty()){
+                    Main.setMainStage(visibleList(input));}
+                    else{addButtons.clear();
+                    addButtons.addAll(failedButtons);
+                    failedButtons.clear();
+                    }
 
 
-        return null;
+        });
+
+        pane.getChildren().add(submit);
+
+        return new Scene(pane);
     }
 
 
@@ -331,7 +368,7 @@ public abstract class Visuals {
 
     }
 
-    static class noIntegerAsInitiative extends Error {
+    static class NoIntegerAsInitiative extends Error {
     }
 
     static class SizedButton extends Button {

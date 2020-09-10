@@ -21,7 +21,10 @@ public abstract class FileManager {
         }   catch (FileNotFoundException e) { }
 
         for (String s : input){
-            returnList.add(new Fighter(s.split(":")[0], s.split(":")[1]));
+            String[] inputSplit = s.split(":");
+            try{
+            returnList.add(new Fighter(inputSplit[0], inputSplit[1]));}
+            catch(IndexOutOfBoundsException ex){ }
         }
 
         return returnList;
