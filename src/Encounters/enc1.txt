@@ -1,2 +1,0 @@
-Orc:1
-Goblin:17

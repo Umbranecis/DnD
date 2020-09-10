@@ -36,7 +36,7 @@ public abstract class FileManager {
         return f.showOpenDialog(null);
     }
 
-    public static Collection<Fighter> getGroup(){ return getGroup(selectGroup()); }
+    public static Collection<Fighter> getGroup(){return getGroup(selectGroup());}
 
 
 

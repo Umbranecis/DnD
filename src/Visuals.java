@@ -204,7 +204,11 @@ public abstract class Visuals {
         });
 
         addGroup.setOnAction(event -> {
-            Main.setMainStage(addGroupToList(l, FileManager.getGroup()));
+            Main.setMainStage(addToList(l, FileManager.GROUP));
+        });
+
+        addEncounter.setOnAction(event -> {
+            Main.setMainStage(addToList(l, FileManager.ENCOUNTER));
         });
 
 
@@ -280,14 +284,20 @@ public abstract class Visuals {
         return new Scene(vbox);
     }
 
-    public static Scene addGroupToList(InitiativeList input, Collection<Fighter> fighterList){
+    public static Scene addToList(InitiativeList l, String type){
+        Collection<Fighter> input;
+        if(type == FileManager.GROUP){input = FileManager.getGroup();}
+        else if(type == FileManager.ENCOUNTER){ input = FileManager.getEncounter();}
+        else{input = new HashSet<Fighter>() {
+        };}
 
         VBox pane = new VBox();
         Button submit = new SizedButton();
         Collection<Button> addButtons = new HashSet<Button>();
         Collection<Button> failedButtons = new HashSet<>();
-        for (Fighter f : fighterList){
 
+
+        for (Fighter f : input){
             HBox hBox = new HBox();
             SizedTextField name = new SizedTextField(f.name);
             SizedTextField playername = new SizedTextField(f.playerName);
@@ -297,10 +307,15 @@ public abstract class Visuals {
             addButtons.add(add);
 
             hBox.getChildren().addAll(name,playername,initiative, error);
+            if(type == FileManager.ENCOUNTER){
+                playername.setText("DM");
+                hBox.getChildren().remove(playername);
+
+            }
             pane.getChildren().add(hBox);
             add.setOnAction(event -> {
                 try {
-                    clearAndAdd(name, playername, initiative, input);
+                    clearAndAdd(name, playername, initiative, l);
                     pane.getChildren().remove(hBox);
                 }
                 catch (NoIntegerAsInitiative noIntegerAsInitiative){
@@ -318,7 +333,7 @@ public abstract class Visuals {
 
             }
                     if(failedButtons.isEmpty()){
-                    Main.setMainStage(visibleList(input));}
+                    Main.setMainStage(visibleList(l));}
                     else{addButtons.clear();
                     addButtons.addAll(failedButtons);
                     failedButtons.clear();
@@ -331,6 +346,20 @@ public abstract class Visuals {
 
         return new Scene(pane);
     }
+
+
+    public static Scene addEncounterToList(Collection<Fighter> input, InitiativeList l){
+        VBox pane = new VBox();
+        Button submit = new SizedButton();
+        Collection<Button> addButtons = new HashSet<Button>();
+        Collection<Button> failedButtons = new HashSet<>();
+
+        for(Fighter f : input){
+
+        }
+
+        return null;
+        }
 
 
     public static class SizedTextField extends TextField {
