@@ -1,4 +1,4 @@
-import Errors.NoValidDice;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -7,64 +7,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import Buttons.*;
+
+import java.io.IOException;
 import java.util.*;
+
 
 public abstract class Visuals {
 
 
-    public static Scene start() {
-        SizedButton diceSimulator = new ProgramButton("Start the Dice Simulator", "diceSimulator");
-        SizedButton properties = new ProgramButton("roll properties for a new Champion", "properties");
-        SizedButton initiativeList = new ProgramButton("create an initiative List", "initiativeList");
-        HBox pane = new HBox();
-        pane.getChildren().addAll(properties, diceSimulator, initiativeList);
-        return new Scene(pane);
-
+    public static Scene start() throws IOException {
+        return new Scene(FXMLLoader.load(Main.class.getResource("xmlDocuments/Start.fxml")));
     }
 
-    public static Scene diceSimulator() {
-
-        Button roll = new SizedButton("roll");
-        Button d20 = new SizedButton("normal d20");
-        Button adv = new SizedButton("advantage d20");
-        Button dadv = new SizedButton("disadvantaged d20");
-
-        TextField dice = new TextField();
-        SizedTextField result = new SizedTextField();
-
-        dice.setPromptText("insert your dice. example: 2d4+1");
-
-
-        roll.setOnAction(event -> {
-            try {
-                result.setText("" + DiceSimulator.roll(dice.getText()));
-            } catch (NoValidDice noValidDice) {
-                result.setText("please insert a valid dice");
-            }
-            dice.setText("");
-
-        });
-
-        d20.setOnAction(event -> result.setText("" + DiceSimulator.d20()));
-
-        adv.setOnAction(event -> result.setText("" + DiceSimulator.advantage()));
-
-        dadv.setOnAction(event -> result.setText("" + DiceSimulator.disadvantage()));
-
-
-        HBox hbox = new HBox(dice, roll);
-        VBox buttons = new VBox(hbox, d20, adv, dadv, new CancelButton());
-        HBox pane = new HBox(buttons, result);
-
-        Scene s = new Scene(pane);
-
-        s.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                roll.fire();
-            }
-        });
-
-        return s;
+    public static Scene diceSimulator() throws IOException {
+            return new Scene( FXMLLoader.load(Main.class.getResource("xmlDocuments/DiceSimulator.fxml")));
     }
 
 
@@ -185,9 +141,21 @@ public abstract class Visuals {
             v.getChildren().add(h);
         }
 
-        createNewGroup.setOnAction(event -> Main.setMainStage(addGroupToFile(l)));
+        createNewGroup.setOnAction(event -> {
+            try {
+                Main.setMainStage(addGroupToFile(l));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
-        createNewEncounter.setOnAction(event -> Main.setMainStage(addEncounterToFile(l)));
+        createNewEncounter.setOnAction(event -> {
+            try {
+                Main.setMainStage(addEncounterToFile());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         addGroup.setOnAction(event -> {
             try{
@@ -211,68 +179,12 @@ public abstract class Visuals {
         return new Scene(v);
     }
 
-    public static Scene addGroupToFile(InitiativeList input) {
-        ArrayList<Fighter> returnList = new ArrayList<>();
-        SizedInputField fileName = new SizedInputField("filename");
-        SizedInputField name = new SizedInputField("character name");
-        SizedInputField playerName = new SizedInputField("player name");
-        SizedButton add = new SizedButton("add");
-        SizedButton submit = new SizedButton("submit");
-
-        VBox vbox = new VBox();
-        HBox names = new HBox();
-        HBox createFile = new HBox();
-
-        names.getChildren().addAll(name, playerName, add);
-        createFile.getChildren().addAll(fileName, submit);
-        vbox.getChildren().addAll(names, createFile);
-
-        add.setOnAction(event -> {
-            returnList.add(new Fighter(name.getText(), playerName.getText()));
-            name.clear();
-            playerName.clear();
-        });
-        submit.setOnAction(event -> {
-            FileManager.addGroup(returnList, fileName.getText());
-            Main.setMainStage(visibleList(input));
-        });
-
-
-        return new Scene(vbox);
+    public static Scene addGroupToFile(InitiativeList input) throws IOException {
+        return new Scene(FXMLLoader.load(Main.class.getResource("xmlDocuments/addGroupToFile.fxml")));
     }
 
-    public static Scene addEncounterToFile(InitiativeList input) {
-        HashMap<String, Integer> returnList = new HashMap<>();
-        SizedInputField fileName = new SizedInputField("filename");
-        SizedInputField name = new SizedInputField("monsters name");
-        SizedInputField amt = new SizedInputField("amount");
-        SizedButton add = new SizedButton("add");
-        SizedButton submit = new SizedButton("submit");
-
-        VBox vbox = new VBox();
-        HBox names = new HBox();
-        HBox createFile = new HBox();
-        names.getChildren().addAll(name, amt, add);
-        createFile.getChildren().addAll(fileName, submit);
-        vbox.getChildren().addAll(names, createFile);
-
-        add.setOnAction(event -> {
-            try {
-                returnList.put(name.getText(), Integer.parseInt(amt.getText()));
-                name.clear();
-                amt.clear();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-        });
-
-        submit.setOnAction(event -> {
-            FileManager.addEncounter(returnList, fileName.getText());
-            Main.setMainStage(visibleList(input));
-        });
-
-        return new Scene(vbox);
+    public static Scene addEncounterToFile() throws IOException {
+        return new Scene(FXMLLoader.load(Main.class.getResource("xmlDocuments/addEncounterToFile.fxml")));
     }
 
     public static Scene addGroupToList(InitiativeList l, Grouptype type){
@@ -364,7 +276,13 @@ public abstract class Visuals {
 
     public static class CancelButton extends SizedButton {
         public CancelButton() {
-            setOnAction(event -> Main.setMainStage(start()));
+            setOnAction(event -> {
+                try {
+                    Main.setMainStage(start());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
             setText("cancel");
         }
 
@@ -372,13 +290,5 @@ public abstract class Visuals {
 
     static class NoIntegerAsInitiative extends Error {
     }
-
-    public static class ProgramButton extends SizedButton {
-        public ProgramButton(String text, String task) {
-            this.setOnAction(actionEvent -> Program.getByName(task).runProgram());
-            this.setText(text);
-        }
-    }
-
 
 }

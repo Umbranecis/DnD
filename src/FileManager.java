@@ -99,7 +99,7 @@ public abstract class FileManager {
 
     }
 
-    public static void addGroup(ArrayList<Fighter> input, String name){
+    public static void addGroup(Collection<Fighter> input, String name){
         File f = new File(Grouptype.GROUP.PATH + "/" + name + ".txt");
         try {
             f.createNewFile();

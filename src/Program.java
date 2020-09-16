@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public enum Program{
 
     PROPERTIES("properties")
@@ -10,13 +12,20 @@ public enum Program{
     DICESIMULATOR("diceSimulator")
             {
                 public void runProgram(){
-                    Main.setMainStage(Visuals.diceSimulator());
+                    try {
+                        Main.setMainStage(Visuals.diceSimulator());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             },
 
     INITIATIVELIST("initiativeList")
             {
-                public void runProgram() {Main.setMainStage(Visuals.visibleList(new InitiativeList()));}
+                public void runProgram()
+                {Main.setMainStage(Visuals.visibleList(new InitiativeList()));}
+
+
             };
 
 
