@@ -4,6 +4,6 @@ import javafx.scene.layout.VBox;
 public class PropertyRoll_Controller {
 
     @FXML
-    VBox boxes;
+    VBox box;
 
 }
