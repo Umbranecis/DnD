@@ -5,7 +5,11 @@ public enum Program{
     PROPERTIES("properties")
             {
                 public void runProgram(){
-                    Main.setMainStage(Visuals.propertyRoll());
+                    try {
+                        Main.setMainStage(Visuals.propertyRoll());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                 }
             },

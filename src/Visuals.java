@@ -24,12 +24,18 @@ public abstract class Visuals {
     }
 
 
-    public static Scene propertyRoll() {
+    public static Scene propertyRoll() throws IOException {
         Button roll = new SizedButton("roll");
         VBox v = new VBox();
 
 
-        roll.setOnAction(event -> Main.setMainStage(propertyRoll()));
+        roll.setOnAction(event -> {
+            try {
+                Main.setMainStage(propertyRoll());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
         for (int i = 6; i > 0; i--) {
             v.getChildren().add(connectedPropertyFields());
@@ -46,7 +52,7 @@ public abstract class Visuals {
             }
         });
 
-        return s;
+        return new Scene(FXMLLoader.load(Main.class.getResource("xmlDocuments/PropertyRoll.fxml")));
     }
 
     private static HBox connectedPropertyFields() {
