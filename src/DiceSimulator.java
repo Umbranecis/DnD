@@ -1,5 +1,7 @@
 import Errors.NoValidDice;
 
+import java.util.Scanner;
+
 public abstract class DiceSimulator {
 
 static public int roll(String s) throws NoValidDice
@@ -41,5 +43,4 @@ static public int roll(String s) throws NoValidDice
             return a;
         return b;
     }
-
 }

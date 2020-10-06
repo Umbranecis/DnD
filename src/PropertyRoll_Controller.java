@@ -8,40 +8,60 @@ import java.io.IOException;
 import java.util.*;
 
 public class PropertyRoll_Controller {
-        @FXML
-        VBox box;
-        @FXML
-        Button reroll;
-        @FXML
-        Button cancel;
+    @FXML
+    VBox box;
+    @FXML
+    Button reroll;
+    @FXML
+    Button cancel;
 
-        @FXML
-        void reroll(){
-            for (int i = 6; i>0; i--){
-                box.getChildren().add(connectedHBox(PropertyRoll.property()));
-            }
+    @FXML
+    TextField array1;
+    @FXML
+    TextField array2;
+    @FXML
+    TextField array3;
+    @FXML
+    TextField array4;
+    @FXML
+    TextField array5;
+    @FXML
+    TextField array6;
+
+    @FXML
+    TextField result1;
+    @FXML
+    TextField result2;
+    @FXML
+    TextField result3;
+    @FXML
+    TextField result4;
+    @FXML
+    TextField result5;
+    @FXML
+    TextField result6;
+
+    @FXML
+    TextField result;
+
+
+    @FXML
+    void reroll() {
+        Collection<int[]> values = PropertyRoll.properties();
+    }
+
+    @FXML
+    void cancel() {
+        try {
+            Main.setMainStage(Visuals.start());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
-        @FXML
-        void cancel(){
-            try {
-                Main.setMainStage(Visuals.start());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        public HBox connectedHBox(int[] input){
-            HBox box = new HBox();
-            TextField array = new TextField();
-            TextField value = new TextField();
-            array.setText(Arrays.toString(input));
-            value.setText("" + PropertyRoll.value(input));
-            array.setEditable(false);
-            value.setEditable(false);
-            return box;
-        }
-
+    void resultToString(){
+        
+    }
 
 
 }
