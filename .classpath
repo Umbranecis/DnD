@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/dom4j-2.1.1"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/javafx-sdk-11.0"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/javafx-swt"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons-lang3-3.11-src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/commons-lang3-3.11-javadoc"/>
+	<classpathentry kind="output" path="out/production/DnD"/>
+</classpath>

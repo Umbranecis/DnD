@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="95.0" prefWidth="478.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller_Start">
+   <children>
+      <Button mnemonicParsing="false" onAction="#runProgramProperties" prefHeight="95.0" prefWidth="160.0" text="Properties" />
+      <Button mnemonicParsing="false" onAction="#runProgramDiceSimulator" prefHeight="109.0" prefWidth="160.0" text="DiceSimulator" />
+      <Button mnemonicParsing="false" onAction="#runProgramInitiativeList" prefHeight="99.0" prefWidth="160.0" text="Initiative List" />
+   </children>
+</HBox>

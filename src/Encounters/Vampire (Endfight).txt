@@ -1,0 +1,2 @@
+vampire:1
+Vampire spawn:3

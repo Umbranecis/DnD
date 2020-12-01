@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/out/test/DnD"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<levels>
+		<level name="dom4j-2.1.1" value="project"/>
+		<level name="javafx-sdk-11.0" value="project"/>
+		<level name="javafx-swt" value="project"/>
+		<level name="commons-lang3-3.11-src" value="project"/>
+		<level name="commons-lang3-3.11-javadoc" value="project"/>
+	</levels>
+</component>
