@@ -25,47 +25,8 @@ public abstract class Visuals {
 
 
     public static Scene propertyRoll() throws IOException {
-        Button roll = new SizedButton("roll");
-        VBox v = new VBox();
-
-
-        roll.setOnAction(event -> {
-            try {
-                Main.setMainStage(propertyRoll());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        for (int i = 6; i > 0; i--) {
-            v.getChildren().add(connectedPropertyFields());
-        }
-        v.getChildren().add(roll);
-
-
-        v.getChildren().add(new CancelButton());
-        Scene s = new Scene(v);
-
-        s.setOnKeyPressed(event -> {
-            if (event.getCode().equals(KeyCode.ENTER)) {
-                roll.fire();
-            }
-        });
-
         return new Scene(FXMLLoader.load(Main.class.getResource("xmlDocuments/PropertyRoll.fxml")));
     }
-
-    private static HBox connectedPropertyFields() {
-        HBox x = new HBox();
-        int[] diceArray = PropertyRoll.property();
-        SizedTextField dice = new SizedTextField();
-        SizedTextField result = new SizedTextField();
-        dice.setText(Arrays.toString(diceArray));
-        result.setText(Integer.toString(PropertyRoll.value(diceArray)));
-        x.getChildren().addAll(dice, result);
-        return x;
-    }
-
 
     public static HBox addToList(InitiativeList l) {
         HBox h = new HBox();

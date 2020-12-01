@@ -44,10 +44,38 @@ public class PropertyRoll_Controller {
     @FXML
     TextField result;
 
+    ArrayList<TextField> results = new ArrayList<>();
+    ArrayList<TextField> arrays = new ArrayList<>();
 
     @FXML
-    void reroll() {
+     void reroll() {
+        results.add(result1);
+        results.add(result2);
+        results.add(result3);
+        results.add(result4);
+        results.add(result5);
+        results.add(result6);
+        arrays.add(array1);
+        arrays.add(array2);
+        arrays.add(array3);
+        arrays.add(array4);
+        arrays.add(array5);
+        arrays.add(array6);
+
         Collection<int[]> values = PropertyRoll.properties();
+        int i = 0;
+        int endResult = 0;
+        for(int[] value : values){
+            arrays.get(i).setText(resultToString(value));
+            results.get(i).setText("" + PropertyRoll.value(value));
+            endResult += PropertyRoll.value(value);
+            i++;
+        }
+
+        result.setText("" + endResult);
+
+
+
     }
 
     @FXML
@@ -59,9 +87,17 @@ public class PropertyRoll_Controller {
         }
     }
 
-    void resultToString(){
-        
+    String resultToString(int[] rolls){
+        String s = "";
+        for (int i : rolls){
+            s += "" + i + ",";
+        }
+
+        return s.substring(0, s.length() - 1);
     }
+
+
+    
 
 
 }
